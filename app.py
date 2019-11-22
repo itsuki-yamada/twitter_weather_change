@@ -20,11 +20,26 @@
 """
 import datetime
 
+from requests_oauthlib import OAuth1Session
+
+import config
 from weather_info_get import weather_search
 
 
+def update_name(twitter, user_name):
+    url = 'https://api.twitter.com/1.1/account/update_profile.json'
+    params = {'name': user_name}
+    twitter.post(url, params)
+
+
 def main():
-    user_name = 'hoge'
+    CK = config.CONSUMER_KEY
+    CS = config.CONSUMER_SECRET
+    AT = config.ACCESS_TOKEN
+    ATS = config.ACCESS_TOKEN_SECRET
+    twitter = OAuth1Session(CK, CS, AT, ATS)  # 認証処理
+
+    user_name = 'itsuki'
     weather_id = weather_search()
     print(weather_search())
     # weather_id = 201
@@ -60,6 +75,7 @@ def main():
         user_name = user_name + "🌀"
 
     print(jst)
+    update_name(twitter, user_name)
     print(user_name)
 
 
